@@ -6,35 +6,37 @@ else
 	TAG=$1
 fi
 
-cd `dirname $0`
-cd ..
+pushd "$(dirname "$0")" || exit
+pushd ..
 
 BRDIR=buildroot-${TAG}
 
-if [ -d $BRDIR ]; then
-	echo "Saving current buildroot"
-	rm -rf $BRDIR.bak
-	mv $BRDIR $BRDIR.bak
+if [ -d "$BRDIR" ]; then
+	echo "Saving existing buildroot"
+	mv "$BRDIR" "$BRDIR.bak-$(date '+%s')"
 fi
 
 echo "Checking out buildoot tag ${TAG} from Github"
-git clone https://github.com/buildroot/buildroot $BRDIR
+git clone https://github.com/buildroot/buildroot "$BRDIR"
 
 echo "Checking out a known-good release"
-pushd $BRDIR
-git checkout $TAG
+pushd "$BRDIR" || exit
+git checkout "$TAG"
 
-if [ -f ../hifiberry-os/buildroot/buildroot-${TAG}.patch ]; then
+if [ -f "../hifiberry-os/buildroot/buildroot-${TAG}.patch" ]; then
 	echo "Applying patch"
-	patch -p1 < ../hifiberry-os/buildroot/buildroot-${TAG}.patch
-else	
-	ls ../hifiberry-os/buildroot/buildroot-${TAG}.patch
+	patch -p1 < "../hifiberry-os/buildroot/buildroot-${TAG}.patch"
+else
+	ls "../hifiberry-os/buildroot/buildroot-${TAG}.patch"
 	echo "No patch found - is this correct?"
 fi
-popd
+popd || exit
 
 echo "Copying genimage configurations"
-cp -v hifiberry-os/buildroot/board/raspberrypi/genimage*cfg $BRDIR/board/raspberrypi
+cp -v hifiberry-os/buildroot/board/raspberrypi/genimage*cfg "$BRDIR/board/raspberrypi"
 
 echo "Symlinking to buildroot"
-ln -s $BRDIR buildroot
+ln -s "$BRDIR" buildroot
+
+popd || exit
+popd || exit
