@@ -42,11 +42,12 @@ This script will download the correct release via git and apply a few necessary 
 
 ## Start the first build
 
-Now, change to the HiFiBerryOS directory, create a configuration and compile HiFiBerryOS
+Now, create a configuration and compile HiFiBerryOS
 ```
-cd hifiberry-os
-./build-config 3
-./compile 3
+export RPI_VERSION=3
+
+./build-config $RPI_VERSION
+./compile $RPI_VERSION
 ```
 
 This will take some time. Depending on your hardware and network connectivity, expect at least one hour, but it can be also much longer.
