@@ -1,16 +1,15 @@
 #!/bin/bash
-if [ "$1" == "" ]; then 
+
+if [ "$1" == "" ]; then
 	TAG=2021.05
 else
 	TAG=$1
 fi
 
 cd `dirname $0`
+cd ..
 
 BRDIR=buildroot-${TAG}
-
-cd `dirname $0`
-cd ..
 
 if [ -d $BRDIR ]; then
 	echo "Saving current buildroot"
@@ -38,6 +37,4 @@ echo "Copying genimage configurations"
 cp -v hifiberry-os/buildroot/board/raspberrypi/genimage*cfg $BRDIR/board/raspberrypi
 
 echo "Symlinking to buildroot"
-rm buildroot
 ln -s $BRDIR buildroot
-
