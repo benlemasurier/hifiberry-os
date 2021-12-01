@@ -1,7 +1,7 @@
 config BR2_PACKAGE_WEBRADIO
 	bool "webradio"
         help
-	  Tools fosten to web radio stations (incl. TuneIn)
+	  Support for web radio.
         depends on BR2_PACKAGE_HIFIBERRY_BASE
         depends on BR2_PACKAGE_BEOCREATE
 	select BR2_PACKAGE_LIBCURL
